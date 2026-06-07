@@ -10,9 +10,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
-    })
+    ->withMiddleware(function (Middleware $middleware) {
+    
+    // We are telling Laravel: "Hey, I have a custom middleware."
+    $middleware->alias([
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'active' => \App\Http\Middleware\EnsureUserIsActive::class,
+    ]);
+
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

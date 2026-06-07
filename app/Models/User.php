@@ -18,10 +18,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
+        'is_active', 
     ];
 
     /**
@@ -45,5 +48,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    // Add these methods inside your existing User model class
+
+    /**
+     * Get the lead batches assigned to this user (caller).
+     */
+    public function leadBatches()
+    {
+        return $this->hasMany(LeadBatch::class);
+    }
+
+    /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if the user is a caller.
+     */
+    public function isCaller(): bool
+    {
+        return $this->role === 'caller';
     }
 }
